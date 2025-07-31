@@ -1,7 +1,6 @@
 package com.project.banking.repository;
 
-
-import org.hibernate.Transaction;
+import com.project.banking.model.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
