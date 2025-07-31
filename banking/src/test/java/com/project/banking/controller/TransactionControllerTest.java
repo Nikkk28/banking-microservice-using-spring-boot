@@ -7,12 +7,13 @@ import com.project.banking.model.User;
 import com.project.banking.service.TransactionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,23 +23,26 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(TransactionController.class)
+@ExtendWith(MockitoExtension.class)
 class TransactionControllerTest {
 
-    @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Mock
     private TransactionService transactionService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    @InjectMocks
+    private TransactionController transactionController;
 
+    private ObjectMapper objectMapper;
     private Transaction transaction;
     private TransactionRequest transactionRequest;
 
     @BeforeEach
     void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(transactionController).build();
+        objectMapper = new ObjectMapper();
+
         User sender = new User("sender1", "Alice", "alice@example.com", 1000.0);
         User recipient = new User("recipient1", "Bob", "bob@example.com", 500.0);
         transaction = new Transaction(sender, recipient, 200.0);
